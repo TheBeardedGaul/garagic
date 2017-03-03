@@ -2,21 +2,34 @@ import {Salle} from "./Salle";
 import {Utilisateur} from "./Utilisateur";
 import {Participation} from "./Participation";
 import {Commentaire} from "./Commentaire";
+import {UUID} from "angular2-uuid";
 /**
  * Created by Florent on 26/02/2017.
  */
 export class Atelier {
+  private _id: number;
   private _nom: string;
-  private _date: Date;
-  private _theme: string;
-  private _description: string;
-  private _prerequis: string;
-  private _salle: Salle;
-  private _organisateurs: Array<Utilisateur>;
-  private _participants: Array<Participation>;
-  private _commentaires: Array<Commentaire>;
+  private _date?: Date;
+  private _theme?: string;
+  private _description?: string;
+  private _prerequis?: string;
+  private _salle?: Salle;
+  private _organisateurs?: Array<Utilisateur>;
+  private _participants?: Array<Participation>;
+  private _commentaires?: Array<Commentaire>;
 
   constructor() {
+    this._organisateurs = [];
+    this._participants = [];
+    this._commentaires = [];
+  }
+
+  get id(): number {
+    return this._id;
+  }
+
+  set id(value: number) {
+    this._id = value;
   }
 
   get nom(): string {
@@ -89,5 +102,23 @@ export class Atelier {
 
   set commentaires(value: Array<Commentaire>) {
     this._commentaires = value;
+  }
+
+  getDateFormatee(): string {
+    let day: string = ('0' + this._date.getDate()).slice(-2);
+    var month: string = ('0' + (this._date.getMonth()+1)).slice(-2);
+    var year: number = this._date.getFullYear();
+    return [day, month, year].join('/');
+  }
+
+  addParticipant(utilisateur: Utilisateur): void {
+    let part: Participation = new Participation();
+    part.utilisateur = utilisateur;
+    this.participants.push(part);
+  }
+
+  removeParticipant(utilisateur: Utilisateur): void {
+    let participants: Participation[] = this.participants.filter((item: Participation) => (item.utilisateur.identifiant != utilisateur.identifiant));
+    this.participants = participants;
   }
 }

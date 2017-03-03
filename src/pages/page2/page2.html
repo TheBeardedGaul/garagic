@@ -3,21 +3,59 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Page Two</ion-title>
+    <ion-title>Le Garage</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
     <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
-      <ion-icon [name]="item.icon" item-left></ion-icon>
-      {{item.title}}
+      <div class="item-note" item-left>
+        <ion-label>{{item.nom}}</ion-label>
+      </div>
       <div class="item-note" item-right>
-        {{item.note}}
+        <ion-label>{{item.getDateFormatee()}}</ion-label>
       </div>
     </button>
   </ion-list>
   <div *ngIf="selectedItem" padding>
-    You navigated here from <b>{{selectedItem.title}}</b>
+    <ion-item>
+      Atelier :  <b>{{selectedItem.nom}}</b>
+    </ion-item>
+    <ion-item>
+      Date : <b>{{selectedItem.getDateFormatee()}}</b>
+    </ion-item>
+    <ion-item>
+      Theme : <b>{{selectedItem.theme}}</b>
+    </ion-item>
+    <ion-item>
+      Description : <b>{{selectedItem.description}}</b>
+    </ion-item>
+    <ion-item>
+      Prerequis : <b>{{selectedItem.prerequis}}</b>
+    </ion-item>
+    <ion-item>
+      Salle : <b>{{selectedItem.salle}}</b>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="people" item-left></ion-icon>
+      Nombre d'inscrit
+      <ion-badge item-right>{{selectedItem.participants.length}}</ion-badge>
+      <form (ngSubmit)="addParticipant()">
+        <button ion-button icon-right *ngIf="this.user() && !isInscrit()">
+          Participer
+          <ion-icon name="add-circle" ></ion-icon>
+        </button>
+        <button ion-button icon-right *ngIf="this.user() && isInscrit()">
+          Désinscrire
+          <ion-icon name="remove-circle" ></ion-icon>
+        </button>
+      </form>
+    </ion-item>
+    <ion-item>
+      <ion-icon name='paper' item-left style="color: #d03e84"></ion-icon>
+      Nombre de commentaire
+      <ion-badge item-right>{{selectedItem.commentaires.length}}</ion-badge>
+    </ion-item>
   </div>
 </ion-content>
